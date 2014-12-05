@@ -1,0 +1,407 @@
+@(metas: List[Meta])(metasPorSemana: Array[Int])(metasAlcancadas: Array[Int])(metasNaoAlcancadas: Array[Int])
+
+<!DOCTYPE html>
+    <html>
+        <head lang="en">
+            <title>Minhas Metas</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                <!-- Bootstrap CSS -->
+            <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen"><style type="text/css">
+        </style>
+        </head>
+        <body style="background-color: #dcdcdc">
+            <!--Cabeçalho-->
+            <div class="jumbotron" style="border-bottom: 4px dashed #428bca">
+                <div class="container">
+                    <h1>Minhas Metas Semanais</h1>
+                    <p>Programe seus objetivos transformado-os em metas semanais.</p>
+                    <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#readme">
+                        Veja como funciona!
+                    </button></p>
+
+                    <div class="modal fade" id="readme" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        <b>Como Funciona?</b>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="well">
+                                        O intuito desta aplicação web é proporcionar ao usuário
+                                        uma maneira de organizar seus objetivos.
+                                        <br>
+                                        <br>
+                                        O usuário deve cadastrar sua meta, informando:
+                                        <br>
+                                        - Nome da meta
+                                        <br>
+                                        - Descrição da meta
+                                        <br>
+                                        - Prioridade (<span class="badge">1</span> - Baixa;
+                                        <span class="badge">2</span> - Média;
+                                        <span class="badge">3</span> - Alta)
+                                        <br>
+                                        - Prazo (Você pode estipular um prazo de até 6 semanas para alcançar sua meta)
+                                        <br>
+                                        <br>
+                                        As lista de metas do usuário está ordenada por semana,
+                                        e a cada aba da respectiva semana estipulada.
+                                        As metas são ordenadas de acordo com a prioridade definida.
+                                        Além disso, é possível visuallizar o número de metas planejadas por semana
+                                        <br>
+                                        <br>
+                                        Existem duas marcações/status possíveis para sua meta:
+                                        <br>
+                                        <button type="button" class="btn btn-xs btn-info">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </button> - Significa que esta meta ainda não foi alcançada.
+                                        <br>
+                                        <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                        </button> - Significa que esta meta foi alcançada.
+                                        O usuário marca sua meta como alcançada, ao clicar no status anterior.
+                                        <br>
+                                        <br>
+                                        Ainda é possível excluir uma meta caso desista de alcança-la,
+                                        para isso urilizamos o botão vermelho
+                                        <button type="button" class="btn btn-xs btn-danger">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <!--Cadastro-->
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="text-align: center">
+                                <h3 class="panel-title">
+                                    <b>Qual sua meta?</b>
+                                </h3>
+                            </div>
+                            <form class="form-horizontal" role="form" method="post" action="/meta">
+                                <div class="form-group">
+                                    <label for="nome" class="col-sm-2 control-label">Meta</label>
+                                    <div class="col-sm-10">
+                                        <input name="nome" id="nome" type="text" class="form-control"
+                                        placeholder="Digite sua meta..." required/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricao" class="col-sm-2 control-label">Descrição</label>
+                                    <div class="col-sm-10">
+                                        <input name="descricao" id="descricao" type="text" class="form-control"
+                                        placeholder="Digite a descrição..." required/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prioridade" class="col-sm-2 control-label">Prioridade</label>
+                                    <div class="col-sm-10">
+                                        <select name="prioridade" id="prioridade" class="form-control" required>
+                                            <option value="1">1 - Baixa</option>
+                                            <option value="2">2 - Média</option>
+                                            <option value="3">3 - Alta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" class="col-sm-2 control-label">
+                                    <label for="prazo" class="col-sm-2 control-label">Prazo</label>
+                                    <div class="col-sm-10">
+                                        <select name="prazo" id="prazo" class="form-control" required>
+                                            <option value="1">Ate 1 Semana</option>
+                                            <option value="2">Ate 2 Semanas</option>
+                                            <option value="3">Ate 3 Semanas</option>
+                                            <option value="4">Ate 4 Semanas</option>
+                                            <option value="5">Ate 5 Semanas</option>
+                                            <option value="6">Ate 6 Semanas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" class="col-sm-2 control-label">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-primary">
+                                            Cadastrar Meta</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--Lista-->
+                    <div class="col-md-8 col-md-offset-2" style="border-top: 4px dashed #428bca">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="text-align: center">
+                                <h3 class="panel-title">
+                                <b>Metas Cadastradas</b>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul id="semanas" class="nav nav-tabs">
+                                    <li class="active"><a href="#semana1" data-toggle="tab">1ª Semana</a></li>
+                                    <li><a href="#semana2" data-toggle="tab">2ª Semana</a></li>
+                                    <li><a href="#semana3" data-toggle="tab">3ª Semana</a></li>
+                                    <li><a href="#semana4" data-toggle="tab">4ª Semana</a></li>
+                                    <li><a href="#semana5" data-toggle="tab">5ª Semana</a></li>
+                                    <li><a href="#semana6" data-toggle="tab">6ª Semana</a></li>
+                                </ul>
+
+                                <div id="semanasListas" class="tab-content">
+                                    <div class="tab-pane fade in active" id="semana1">
+                                        <ul id="semana1" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(0)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(0)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(0)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 1){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane fade" id="semana2">
+                                        <ul id="semana2" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(1)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(1)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(1)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 2){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane fade" id="semana3">
+                                        <ul id="semana3" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(2)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(2)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(2)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 3){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane fade" id="semana4">
+                                        <ul id="semana4" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(3)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(3)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(3)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 4){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane fade" id="semana5">
+                                        <ul id="semana5" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(4)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(4)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(4)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 5){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane fade" id="semana6">
+                                        <ul id="semana6" class="list-group">
+                                            <li class="list-group-item">
+                                                Voce tem <b>@metasAlcancadas(5)</b> meta(s) alcançada(s), e
+                                                <b>@metasNaoAlcancadas(5)</b> a alcançar, num total de
+                                                <b>@metasPorSemana(5)</b> meta(s) planejadas para esta semana.</li>
+                                            @for(meta <- metas){
+                                                @if(meta.getPrazo == 6){
+                                                    <li class="list-group-item">
+                                                        @meta.getNome()
+                                                        <span class="pull-right">
+                                                            <form method="post" action="@routes.Application.removeMeta(meta.getId())">
+                                                                <button class="btn btn-xs btn-danger" type="submit">
+                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                        <span class="pull-right">
+                                                        @if(meta.isAlcancada){
+                                                            <button type="button" class="btn btn-xs btn-success" disabled="disabled">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                            </button>
+                                                        }else{
+                                                            <form method="post" action="@routes.Application.setStatus(meta.getId())">
+                                                                <button class="btn btn-xs btn-info" type="submit">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        </span>
+                                                        <p class="list-group-item-info">
+                                                            <small><b>Prioridade:</b> <span class="badge">@meta.getPrioridade</span>
+                                                                <br><b>Descrição:</b> @meta.getDescricao</small>
+                                                        </p>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <!-- jQuery -->
+            <script src="http://code.jquery.com/jquery.js"></script>
+                <!-- Bootstrap JavaScript -->
+            <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        </body>
+    </html>
